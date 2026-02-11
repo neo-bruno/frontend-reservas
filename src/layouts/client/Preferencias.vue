@@ -1,20 +1,12 @@
 <template>
   <div>
-
+    hola preferencia
   </div>
 </template>
 
 <script>
   export default {
-    data: () => ({
 
-    }),
-    methods:{
-
-    },
-    mounted(){
-      
-    }
   }
 </script>
 

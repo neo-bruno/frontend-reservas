@@ -12,10 +12,20 @@
   "dependencies": {
     "@fontsource/roboto": "5.2.7",
     "@mdi/font": "7.4.47",
+    "axios": "^1.13.2",
+    "chart.js": "^4.5.1",
+    "firebase": "^12.7.0",
+    "jspdf": "^4.0.0",
+    "moment": "^2.30.1",
     "pinia": "^3.0.3",
+    "qrcode": "^1.5.4",
     "swiper": "^12.0.3",
+    "v-phone-input": "^5.1.3",
     "vue": "^3.5.21",
+    "vue-chartjs": "^5.3.3",
     "vue-router": "^4.5.1",
+    "vue-sweetalert2": "^5.0.11",
+    "vuedraggable": "^4.1.0",
     "vuetify": "^3.10.1"
   },
   "devDependencies": {

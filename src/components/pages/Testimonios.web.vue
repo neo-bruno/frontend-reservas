@@ -1,27 +1,28 @@
 <template>
   <v-container fluid class="mt-7">
     <div class="text-center mb-10">
-      <p class="font-weight-medium text-secondary">Testimonios</p>
-      <h2 class="text-h4 font-weight-bold">Nuestros Huespedes son Importantes</h2>
+      <p class="font-weight-medium text-secondary">{{ seccion.nombre_seccion }}</p>
+      <h2 class="text-h4 font-weight-bold">{{ seccion.titulo_seccion }}</h2>
     </div>
-    <div style="background-image: url('https://media.gettyimages.com/id/1334117334/es/foto/render-digital-de-una-gran-habitaci%C3%B3n-en-suite-de-hotel.jpg?s=612x612&w=0&k=20&c=qBkhTfkm4NCZbxj8PSy_8xbSSysqQcKBJNcdrASvvVU=');" class="parallax-container">
+    <div :style="{ backgroundImage: `url(${seccion.url_seccion || ''})` }" class="parallax-container">
       <div class="overlay">
-        <swiper :modules="modules" :slides-per-view="1" :loop="true" :autoplay="{ delay: 4000 }"
+        <swiper :modules="modules" :slides-per-view="1" :loop="false" :autoplay="{ delay: 4000 }"
           :pagination="{ clickable: true }" class="mySwiper">
-          <swiper-slide v-for="(testimonio, index) in testimonios" :key="index">
+          <swiper-slide v-for="(resena, index) in resenas" :key="index">
             <div class="testimonial-wrapper">
               <v-row justify="center">
                 <v-col lg="2" sm="2" cols="12">
                   <div class="text-center">
                     <v-avatar size="70" class="avatar">
-                      <v-img :src="testimonio.foto" />
+                      <!-- <v-img :src="resena.foto" /> -->
+                       <v-icon color="white" size="45">mdi-account</v-icon>
                     </v-avatar>
-                    <div class="name">{{ testimonio.nombre }}</div>
-                    <div class="date">{{ testimonio.fecha }}</div>
+                    <div class="name">{{ resena.nombre_usuario }}</div>
+                    <div class="date">{{ fechaLiteral(resena.fecha_resena) }}</div>
                   </div>
                 </v-col>
                 <v-col lg="9" sm="9" cols="12" align-self="center">
-                  <p class="espacio">"{{ testimonio.mensaje }}"</p>
+                  <p class="espacio">"{{ resena.comentario_resena }}"</p>
                 </v-col>
               </v-row>
             </div>
@@ -38,30 +39,56 @@ import { Autoplay, Pagination } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { getSectionByType } from '@/services/seccion.service';
+import { getAllRevies } from '@/services/reserna.service';
+
+import moment from 'moment'
+import 'moment/locale/es'
 
 export default {
   components: { Swiper, SwiperSlide },
   data() {
     return {
       modules: [Autoplay, Pagination],
-      testimonios: [
-        {
-          nombre: "Roberta",
-          fecha: "2 Nov",
-          mensaje:
-            "Mea ad postea meliore fuisset. Timeam repudiare id eum, ex paulo dictas elaboraret sed.",
-          foto: "https://randomuser.me/api/portraits/women/44.jpg",
-        },
-        {
-          nombre: "Carlos",
-          fecha: "15 Ene",
-          mensaje:
-            "Un lugar espectacular, atención impecable y paisajes inolvidables. Repetiría sin dudarlo.",
-          foto: "https://randomuser.me/api/portraits/men/32.jpg",
-        },
-      ],
-    };
+      seccion: {},
+      resenas: [],
+    }
   },
+  methods:{
+    fechaLiteral(fecha) {
+      return moment(fecha, 'YYYY-MM-DD').format('D MMM')
+    },
+    async obtenerSeccion(){
+      try {
+        const res = await getSectionByType(5)
+        if(res.status == 201)
+          this.seccion = res.data.data
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async obtenerResenas(){
+      try {
+        const res = await getAllRevies()
+        if(res.status == 200){
+          let todasResenas = res.data.data
+          this.resenas = todasResenas.filter(item => item.estado_resena != false)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+  },
+  async mounted(){
+    try {
+      await this.obtenerSeccion()
+
+      await this.obtenerResenas()
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
 };
 </script>
 

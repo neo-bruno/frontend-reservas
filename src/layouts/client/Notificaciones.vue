@@ -1,20 +1,12 @@
 <template>
   <div>
-
+    notificaciones
   </div>
 </template>
 
 <script>
   export default {
-    data: () => ({
 
-    }),
-    methods: {
-
-    },
-    mounted(){
-
-    }
   }
 </script>
 

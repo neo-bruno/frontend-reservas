@@ -3,32 +3,33 @@
     <v-row>
       <!-- Texto -->
       <v-col cols="12" md="6">
-        <p class="font-weight-medium text-secondary">Sobre Nosotros</p>
+        <p class="font-weight-medium text-secondary">{{ seccion.nombre_seccion }}</p>
         <h2 class="text-h4 font-weight-bold mb-4">
-          Tailored services and the experience of unique holidays
+          {{ seccion.titulo_seccion }}
         </h2>
         <p style="font-size: 1.3rem;" class="font-weight-light text-primary mb-4">
-          Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim.
+          {{ seccion.subtitulo_seccion }}
         </p>
         <p style="font-size: 1rem;" class="text-cuartary">
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-          aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          {{ seccion.descripcion_seccion }}
         </p>
-        <p class="font-italic mt-6">Maria...the Owner</p>
+        <p class="font-italic mt-6">{{ seccion.detalle_seccion }}</p>
       </v-col>
 
       <!-- Imagen -->
       <v-col cols="12" md="6" class="d-flex justify-center align-center">
         <div class="image-wrapper">
-          <v-img src="@/assets/img/foto1.jpg" class="main-image" cover></v-img>
-          <v-img src="@/assets/img/foto2.jpg" class="overlay-image" cover></v-img>
+          <v-img v-if="seccion.fotos.length > 0" :src="seccion.fotos[1].url_foto || ''" class="main-image"
+            cover></v-img>
+          <v-img v-if="seccion.fotos.length > 0" :src="seccion.fotos[0].url_foto || ''" class="overlay-image"
+            cover></v-img>
         </div>
       </v-col>
     </v-row>
     <v-row dense>
-      <v-col v-for="(room, index) in rooms" :key="index" cols="12" sm="6" md="6" lg="4" class="d-flex">
+      <v-col v-for="(foto, index) in imagenes" :key="index" cols="12" sm="6" md="6" lg="4" class="d-flex">
         <div class="room-card">
-          <v-img :src="room.image" height="380" class="room-img" cover>
+          <v-img :src="foto.url_foto || ''" height="380" class="room-img" cover>
           </v-img>
         </div>
       </v-col>
@@ -37,32 +38,30 @@
 </template>
 
 <script>
+import { getSectionByType } from '@/services/seccion.service';
+
 export default {
   data: () => ({
-    rooms: [
-      {
-        image: "https://media.gettyimages.com/id/1266155634/es/foto/lujosos-y-elegantes-interiores-de-dormitorio.jpg?s=1024x1024&w=gi&k=20&c=CzT_9g39vpyysJoMgqjvsGtEXKztoRjswiRLC3RLCMI=",
-        title: "Junior Suite",
-        price: "$250"
-      },
-      {
-        image: "https://media.gettyimages.com/id/1334117334/es/foto/render-digital-de-una-gran-habitaci%C3%B3n-en-suite-de-hotel.jpg?s=612x612&w=0&k=20&c=qBkhTfkm4NCZbxj8PSy_8xbSSysqQcKBJNcdrASvvVU=",
-        title: "Deluxe Room",
-        price: "$190"
-      },
-      {
-        image: "https://media.gettyimages.com/id/1370825295/es/foto/moderna-habitaci%C3%B3n-de-hotel-con-cama-doble-mesas-de-noche-televisor-y-paisaje-urbano-desde-la.jpg?s=612x612&w=0&k=20&c=TvQ3P2DNP_3Y_owum8au9db1XmTbaaH5Pdt1aEmjUgI=",
-        title: "Superior Room",
-        price: "$240"
-      },
-
-    ]
+    seccion: {fotos: []},
   }),
+  computed: {
+    imagenes() {
+      return this.seccion.fotos.slice(2, 5)
+    }
+  },
   methods: {
-
+    async obtenerSeccion() {
+      try {
+        const res = await getSectionByType(2)
+        if (res.status == 201)
+          this.seccion = res.data.data
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
   mounted() {
-
+    this.obtenerSeccion()
   }
 }
 </script>

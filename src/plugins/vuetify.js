@@ -21,7 +21,7 @@ export default createVuetify({
       myTheme: {
         dark: false,
         colors: {
-          cero: '#F5F5F5',
+          cero: '#feffd8',
           primary: '#242322ff',     // gris oscuro
           secondary: '#A88C4D',   // beige
           terceary: '#FAF7F0',   // blanco

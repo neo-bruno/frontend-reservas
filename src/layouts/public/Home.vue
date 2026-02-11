@@ -1,7 +1,7 @@
 <template>
   <!-- Barra superior -->
   <v-app-bar app fixed color="primary" flat class="px-4">
-    <v-toolbar-title class="text-terceary">Hotel Familia Felipez</v-toolbar-title>
+    <v-toolbar-title class="text-terceary cursor-pointer">Hotel Familia Felipez</v-toolbar-title>
 
     <v-app-bar-nav-icon @click="drawer = !drawer" />
   </v-app-bar>
@@ -17,12 +17,13 @@
         </div>
         <div class="text-center text-h6 font-weight-bold">
           FAMILIA FELIPEZ <br />
-          <span class="text-caption font-weight-light">HOTEL</span>
+          <span class="text-caption font-weight-light">{{ nombre }}</span>
         </div>
 
         <v-list dense nav>
-          <v-list-item v-for="item in menuItems" :key="item.title" :title="item.title" @click="navigate(item.route)">
-          </v-list-item>
+          <v-list-item v-for="item in menuItems" :key="item.title" :title="item.title"
+            @click="handleClick(item)"></v-list-item>
+
         </v-list>
       </div>
 
@@ -42,27 +43,63 @@
 </template>
 
 <script>
+import { useUsuarioStore } from '@/stores/usuario';
+
 export default {
   data: () => ({
     drawer: false,
-    menuItems: [
-      { title: 'Inicio', route: '/' },
-      { title: 'Habitaciones', route: { name: 'habitaciones' } },
-      { title: 'Perfil', route: { name: 'cliente_dashboard' } },
-      { title: 'Login', route: { name: 'login' } },
-    ]
+    nombre: localStorage.nombre_usuario
   }),
+
+  computed: {
+    usuarioStore() {
+      return useUsuarioStore();
+    },
+
+    isLogged() {
+      return !!this.usuarioStore.token;
+    },
+
+    menuItems() {
+      if (this.isLogged) {
+        return [
+          { title: 'Inicio', route: '/' },
+          { title: 'Habitaciones', route: { name: 'habitaciones' } },
+          { title: 'Perfil', route: { name: 'perfil-cliente' } },
+          { title: 'Cerrar sesión', action: 'logout' },
+        ]
+      }
+
+      return [
+        { title: 'Inicio', route: '/' },
+        { title: 'Habitaciones', route: { name: 'habitaciones' } },
+        { title: 'Login', route: { name: 'login' } },
+      ]
+    }
+  },
+
   methods: {
-    navigate(route) {
+    handleClick(item) {
       this.drawer = false
-      this.$router.push(route)
+
+      if (item.action === 'logout') {
+        localStorage.clear()
+        this.usuarioStore.logout();
+        this.$router.push("/");
+        this.$router.go(0)
+        return
+      }
+
+      if (item.route) {
+        this.$router.push(item.route)
+      }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
 
+<style lang="scss" scoped>
 .v-navigation-drawer {
   z-index: 2000 !important;
 }
