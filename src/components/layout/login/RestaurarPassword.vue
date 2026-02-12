@@ -5,26 +5,11 @@
 
       <v-card-text>
         <v-form @submit.prevent="reset">
-          <v-text-field
-            v-model="password"
-            label="Nueva contraseña"
-            type="password"
-            required
-          />
+          <v-text-field v-model="password" label="Nueva contraseña" type="password" required />
 
-          <v-text-field
-            v-model="confirm"
-            label="Confirmar contraseña"
-            type="password"
-            required
-          />
+          <v-text-field v-model="confirm" label="Confirmar contraseña" type="password" required />
 
-          <v-btn
-            type="submit"
-            color="primary"
-            block
-            :loading="loading"
-          >
+          <v-btn type="submit" color="primary" block :loading="loading">
             Guardar contraseña
           </v-btn>
         </v-form>
@@ -37,7 +22,7 @@
 import { resetPassword } from '@/services/auth.service';
 
 export default {
-  data () {
+  data() {
     return {
       password: '',
       confirm: '',
@@ -45,13 +30,13 @@ export default {
       token: this.$route.query.token
     }
   },
-  mounted () {
+  mounted() {
     if (!this.token) {
       this.$router.push('/login')
     }
   },
   methods: {
-    async reset () {
+    async reset() {
       if (this.password !== this.confirm) {
         this.$toast?.error('Las contraseñas no coinciden')
         return
@@ -61,7 +46,8 @@ export default {
       try {
         await resetPassword({
           token: this.token,
-          password: this.password}
+          password: this.password
+        }
         )
 
         this.$toast?.success('Contraseña actualizada')

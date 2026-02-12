@@ -339,8 +339,9 @@ export default {
                 localStorage.id_rol = data.id_rol
 
                 // Aquí rediriges al dashboard o ruta deseada
-                // this.$router.push({ name: 'perfil-cliente' })
-                this.$emit('registroFinalizado')
+                this.$router.push({ name: 'perfil-cliente' })
+                // this.$emit('registroFinalizado')
+                // this.$router.go(-1)
               }
             }, 1000);
             // return true

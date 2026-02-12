@@ -296,7 +296,6 @@ export default {
       }
     },
     removeIcon(item) {
-      console.log(item)
       this.seccion.iconos = this.seccion.iconos.filter(ele => ele.id_icono != item)
     },
     async obtenerSeccion(){
@@ -304,7 +303,6 @@ export default {
         const res = await getSectionByType(4)
         if(res.status == 201){
           this.seccion = res.data.data
-          console.log(this.seccion)
         }
       } catch (error) {
         console.log(error)

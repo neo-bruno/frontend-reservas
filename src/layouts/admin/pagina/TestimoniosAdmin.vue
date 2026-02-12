@@ -80,7 +80,7 @@
           </div>
           <div :style="{ backgroundImage: `url(${seccion.url_seccion || ''})` }" class="parallax-container">
             <div class="overlay">
-              <swiper :modules="modules" :slides-per-view="1" :loop="true" :autoplay="{ delay: 4000 }"
+              <swiper v-if="seccion.resenas" :modules="modules" :slides-per-view="1" :loop="seccion.resenas.length > 3" :autoplay="{ delay: 4000 }"
                 :pagination="{ clickable: true }" class="mySwiper">
                 <swiper-slide v-for="(resena, index) in seccion.resenas" :key="index">
                   <div class="testimonial-wrapper">

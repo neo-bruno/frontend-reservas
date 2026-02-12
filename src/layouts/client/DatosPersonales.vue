@@ -24,7 +24,11 @@
 
               <v-text-field ref="telefono" variant="outlined" :prefix="'(' + usuario.codigo_pais_usuario + ')'"
                 v-model="usuario.telefono_usuario" label="Teléfono" prepend-inner-icon="mdi-phone"
-                :rules="[rules.required]" @keyup.enter.prevent="setfocus('nombre')" />
+                :rules="[rules.required]" @keyup.enter.prevent="setfocus('correo')" />
+
+              <v-text-field ref="correo" v-model="usuario.email_usuario" label="correo electronico"
+                :rules="[rules.required, rules.emailRegex]"
+                prepend-inner-icon="mdi-email" variant="outlined" @keyup.enter.prevent="setfocus('nombre')" />
             </v-form>
           </v-card-text>
 
@@ -61,7 +65,7 @@
 
           <v-card-actions>
             <v-spacer />
-            <v-btn variant="elevated" prepend-inner-icon="mdi-reload" append-icon="mdi-chevron-right" color="primary"
+            <v-btn :disabled="password.nueva != password.confirmar" variant="elevated" prepend-inner-icon="mdi-reload" append-icon="mdi-chevron-right" color="primary"
               @click="cambiarPassword">
               Cambiar contraseña
             </v-btn>
@@ -89,16 +93,6 @@ export default {
   data() {
     return {
       usuario: {
-        id_rol: 0,
-        nombre_usuario: '',
-        telefono_usuario: '',
-        codigo_pais_usuario: '',
-        contrasena_usuario: '',
-        verificado_usuario: true,
-        email_usuario: '',
-        verificado_phone_usuario: false,
-        verificado_email_usuario: false,
-        metodo_registro_usuario: '',
         rol: {
           nombre_rol: ''
         }
@@ -123,6 +117,8 @@ export default {
           (typeof v === 'string' && v.trim().length > 0) || 'No se permite solo espacios',
         soloNumeroODecimal: v =>
           (!!v && /^[0-9]+(\.[0-9]+)?$/.test(v)) || 'Solo números enteros o decimales',
+        emailRegex: v =>
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || 'Correo Invalido',
       },
 
       // paralizando pantalla
@@ -151,12 +147,6 @@ export default {
     async cargarUsuario() {
       const usuarioStore = useUsuarioStore()
       this.usuario = usuarioStore.usuario
-      this.usuario.id_persona = this.usuario.persona.id_persona
-      this.usuario.email_usuario = '',
-        this.usuario.verificado_phone_usuario = false,
-        this.usuario.verificado_email_usuario = false,
-        this.usuario.metodo_registro_usuario = '',
-        console.log(this.usuario)
     },
 
     async actualizarPerfil() {
@@ -285,6 +275,11 @@ export default {
           this.$refs.telefono?.focus()
         }
 
+        if (foco === "correo") {
+          this.$refs.correo?.select()
+          this.$refs.correo?.focus()
+        }
+
         if (foco === "nueva") {
           this.$refs.nueva?.select()
           this.$refs.nueva?.focus()
@@ -303,7 +298,7 @@ export default {
       this.usuario = usuarioStore.usuario
     },
 
-    volverAtras(){
+    volverAtras() {
       this.$router.go(-1)
     }
   },

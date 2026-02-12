@@ -306,7 +306,7 @@ export default {
     async actualizarSeccion() {
       try {
         if (this.seccion.fotos.length >= 5) {
-          console.log(this.seccion)
+
           const { valid } = await this.$refs.formulario.validate()
           this.$nextTick(async () => {
             // Simular login
@@ -412,7 +412,6 @@ export default {
         const res = await getSectionByType(2)
         if (res.status == 201) {
           this.seccion = res.data.data
-          console.log(this.seccion)
         }
       } catch (error) {
         console.log(error)

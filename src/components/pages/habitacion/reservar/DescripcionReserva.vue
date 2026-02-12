@@ -472,7 +472,7 @@ export default {
 
 .descripcion--clamp {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  //-webkit-line-clamp: 3;
   /* 👈 SOLO 2 LÍNEAS */
   -webkit-box-orient: vertical;
   overflow: hidden;

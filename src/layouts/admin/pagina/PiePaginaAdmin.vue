@@ -18,9 +18,8 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12" class="px-0">
-                      <v-file-input v-model="seccion.video_seccion" density="compact" label="Imagen de fondo del footer"
-                        prepend-inner-icon="mdi-image" variant="outlined" accept="image/*" :rules="[rules.required]"
-                        show-size @change="actualizarImagen" @click:clear="actualizarImagen"></v-file-input>
+                      <v-file-input v-model="nuevaImagen" density="compact" label="Imagen de fondo del footer"
+                        prepend-inner-icon="mdi-image" variant="outlined" accept="image/*" show-size></v-file-input>
                     </v-col>
                   </v-row>
                 </v-form>
@@ -143,8 +142,7 @@
               <v-col cols="12">
                 <v-textarea ref="descripcion_icono" v-model="icono.descripcion_icono" density="compact"
                   prepend-inner-icon="mdi-text" variant="outlined" label="descripcion del servicio"
-                  :rules="[rules.required]"
-                  @keyup.enter.prevent="setfocus('nombre_icono')"></v-textarea>
+                  :rules="[rules.required]" @keyup.enter.prevent="setfocus('nombre_icono')"></v-textarea>
               </v-col>
             </v-row>
           </v-form>
@@ -199,6 +197,9 @@ export default {
     dialogo_editar: false,
     file: null,
 
+    nuevaImagen: null,  // SOLO File
+    imagenPreview: null,
+
     // paralizando pantalla
     overlay: false,
     errores: false,
@@ -217,6 +218,11 @@ export default {
         this.overlay = false
       }, 100000)
     },
+    nuevaImagen(file) {
+      if (file instanceof File) {
+        this.imagenPreview = URL.createObjectURL(file)
+      }
+    }
   },
   methods: {
     scrollToTop() {
@@ -324,6 +330,8 @@ export default {
         const res = await getSectionByType(6)
         if (res.status == 201) {
           this.seccion = res.data.data
+          this.imagenPreview = this.seccion.video_seccion
+
           this.seccion.url_backup = 'https://media.gettyimages.com/id/1266155634/es/foto/lujosos-y-elegantes-interiores-de-dormitorio.jpg?s=1024x1024&w=gi&k=20&c=CzT_9g39vpyysJoMgqjvsGtEXKztoRjswiRLC3RLCMI='
           if (this.seccion.iconos.length == 5) {
             this.direccion = this.seccion.iconos[0]
@@ -347,21 +355,21 @@ export default {
             setTimeout(async () => {
               this.overlay = false
 
-              if (this.file) {
+              let payload = { ...this.seccion }
+
+              if (this.nuevaImagen instanceof File) {
                 const formdata = new FormData()
-                formdata.append('file', this.file)
+                formdata.append('file', this.nuevaImagen)
 
                 const res = await saveFile(formdata)
 
-                if (res.status !== 200) {
-                  throw new Error('Error al subir imagen')
-                }
-                this.seccion.video_seccion = res.data
+                payload.video_seccion = res.data
+                this.imagenPreview = res.data
               }
 
-              let res = await modifySection(this.seccion)
+              let res = await modifySection(payload)
               if (res.status === 200) {
-
+                this.nuevaImagen = null
                 this.$swal({
                   title: "Seccion Modificada!",
                   text: "Se ha modificado los datos de la seccion correctamente!!!",
@@ -398,12 +406,11 @@ export default {
           timer: 1500
         })
       }
-    }
+    },
   },
   async mounted() {
     try {
       this.setfocus('url')
-
       await this.obtenerSeccion()
     } catch (error) {
       console.log('el error es: ', error)

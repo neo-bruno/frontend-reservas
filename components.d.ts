@@ -14,7 +14,6 @@ declare module 'vue' {
     AdminSidebar: typeof import('./src/components/layout/AdminSidebar.vue')['default']
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     CalendarioHabitacion: typeof import('./src/components/pages/habitacion/calendario/CalendarioHabitacion.vue')['default']
-    CalendarioReserva: typeof import('./src/components/calendar/CalendarioReserva.vue')['default']
     'Caracteristicas.web': typeof import('./src/components/pages/Caracteristicas.web.vue')['default']
     CardReservaAdmin: typeof import('./src/components/admin/CardReservaAdmin.vue')['default']
     CardReservaCliente: typeof import('./src/components/client/CardReservaCliente.vue')['default']
@@ -46,8 +45,5 @@ declare module 'vue' {
     'Servicios.web': typeof import('./src/components/pages/Servicios.web.vue')['default']
     'Testimonios.web': typeof import('./src/components/pages/Testimonios.web.vue')['default']
     'VerificarNumero.web': typeof import('./src/components/pages/habitacion/reservar/VerificarNumero.web.vue')['default']
-    VPhoneInput: typeof import('vuetify/lib')['VPhoneInput']
-    VTabItem: typeof import('vuetify/lib')['VTabItem']
-    VTabsItems: typeof import('vuetify/lib')['VTabsItems']
   }
 }

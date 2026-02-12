@@ -12,7 +12,7 @@
       <div>
         <div class="text-center">
           <img height="150" class="rounded-t-xl"
-            src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/vip-hotel-logo-design-template-eb72f8981df652fe0be27a9a517ae471_screen.jpg?ts=1660122446"
+            src="../../assets/logo.jpg"
             cover />
         </div>
         <div class="text-center text-h6 font-weight-bold">

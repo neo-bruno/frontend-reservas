@@ -335,7 +335,7 @@ export default {
 
     whatsappLink(reserva) {
       const numeroCompleto = `${this.negocio.codigo_celular_negocio}`.replace(/\D/g, '')
-
+      console.log(numeroCompleto)
       const mensaje = `
         Hola ${this.negocio?.nombre_negocio},
 

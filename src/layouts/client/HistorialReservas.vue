@@ -25,18 +25,19 @@
             item.habitacion.nombre_habitacion }} ({{
               item.habitacion.categoria ? item.habitacion.categoria.nombre_categoria : '' }})</td>
           <td><v-chip style="font-size: .9rem;" color="yellow" variant="elevated">{{ fechaLiteral(item.check_in_reserva)
-          }}</v-chip></td>
+              }}</v-chip></td>
           <td><v-chip style="font-size: .9rem;" color="yellow" variant="elevated">{{
             fechaLiteral(item.check_out_reserva)
-              }}</v-chip></td>
+          }}</v-chip></td>
           <td
             :class="item.estado_reserva == 1 ? 'text-info' : item.estado_reserva == 2 ? 'text-yellow' : item.estado_reserva == 3 ? 'text-success' : item.estado_reserva == 4 ? 'text-error' : item.estado_reserva == 5 ? 'text-indigo' : 'text-primary'">
             {{ item.estado_reserva == 1 ? 'PENDIENTE' : item.estado_reserva == 2 ? 'EN PROCESO...' : item.estado_reserva
-              == 3 ? 'CONFIRMADO' : item.estado_reserva == 4 ? 'CANCELADO' : item.estado_reserva == 5 ? 'LLEGASTE' : 'FALTASTE'}}
+              == 3 ? 'CONFIRMADO' : item.estado_reserva == 4 ? 'CANCELADO' : item.estado_reserva == 5 ? 'LLEGASTE' :
+            'FALTASTE'}}
           </td>
           <td class="text-center">
-            <v-btn v-if="item.estado_reserva != 6" size="34" density="compact" color="primary" small @click="abrirDialogoResena(item)"
-              icon="mdi-comment-edit"></v-btn>
+            <v-btn v-if="item.estado_reserva != 6" size="34" density="compact" color="primary" small
+              @click="abrirDialogoResena(item)" icon="mdi-comment-edit"></v-btn>
             <v-btn size="34" density="compact" color="success" small :href="whatsappLink(item)" target="_blank"
               icon="mdi-whatsapp"></v-btn>
           </td>
@@ -72,7 +73,7 @@
       <v-toolbar class="text-center font-weight-medium text-wrap bg-primary" title="Escribenos tu Opinion"></v-toolbar>
 
       <v-card-text class="px-0 py-0">
-        <ResenaHabitacion :reserva="reserva"/>
+        <ResenaHabitacion :reserva="reserva" />
       </v-card-text>
 
       <v-card-actions class="justify-end bg-primary">
@@ -97,6 +98,7 @@ import ResenaHabitacion from './reservas/ResenaHabitacion.vue';
 import moment from 'moment'
 import 'moment/locale/es'
 import { getRestrictions } from '@/services/restriccion.service';
+import { getBusiness } from '@/services/negocio.service';
 
 export default {
   components: {
@@ -155,9 +157,22 @@ export default {
     fechaLiteral(fecha) {
       return moment(fecha, 'YYYY-MM-DD').format('ddd, DD-MMM-YYYY')
     },
+    fechasLiterales(checkIn, checkOut) {
+      const opciones = {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+
+      const entrada = new Date(checkIn).toLocaleDateString("es-ES", opciones)
+      const salida = new Date(checkOut).toLocaleDateString("es-ES", opciones)
+
+      return `${entrada} - ${salida}`
+    },
     whatsappLink(reserva) {
       const numeroCompleto = `${this.negocio.codigo_celular_negocio}`.replace(/\D/g, '')
-
+      
       const mensaje = `
         Hola ${this.negocio?.nombre_negocio},
 
@@ -391,6 +406,7 @@ export default {
   },
   mounted() {
     this.obtenerReservas()
+    this.obtenerNegocio()
   }
 }
 </script>

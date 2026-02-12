@@ -508,7 +508,6 @@ export default {
         const res = await getSectionByType(3)
         if (res.status == 201) {
           this.seccion = res.data.data
-          console.log(this.seccion)
         }
       } catch (error) {
         console.log(error)
