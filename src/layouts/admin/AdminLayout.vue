@@ -14,7 +14,7 @@
 
         <!-- Dashboard -->
         <v-list-item :to="'/admin'" link>
-          <v-list-item-title> <v-icon class="mr-2">mdi-view-dashboard</v-icon> Dashboard</v-list-item-title>
+          <v-list-item-title> <v-icon class="mr-2">mdi-view-dashboard</v-icon> Administrador</v-list-item-title>
         </v-list-item>
 
         <!-- Reservas -->

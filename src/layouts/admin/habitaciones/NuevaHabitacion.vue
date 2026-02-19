@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <v-btn class="mb-1" color="success" @click="volverAtras"><v-icon>mdi-undo</v-icon> <span class="mx-2">volver atras</span></v-btn>
+    <v-btn class="mb-1" color="success" @click="volverAtras"><v-icon>mdi-undo</v-icon> <span class="mx-2">volver
+        atras</span></v-btn>
     <v-stepper color="primary" v-model="step" next-text="siguiente" prev-text="atras">
       <v-stepper-header>
         <v-stepper-item :complete="step == 2 || step == 3" title="Categorias y Camas" color="primary"
@@ -40,6 +41,11 @@
     </v-stepper>
 
   </v-container>
+
+  <!-- capa protectora de proceso -->
+  <v-overlay :model-value="overlay" class="align-center justify-center" persistent>
+    <v-progress-circular color="primary" size="64" indeterminate></v-progress-circular>
+  </v-overlay>
 </template>
 
 
@@ -87,7 +93,11 @@ export default {
         descripcion_habitacion: '',
         detalle_habitacion: '',
         estado_habitacion: 1,
-      }
+      },
+
+      // paralizando pantalla
+      overlay: false,
+      errores: false,
     }
   },
 
@@ -107,11 +117,18 @@ export default {
         h.detalle_habitacion &&
         h.descripcion_habitacion
       )
-    }
+    },
+  },
+  watch: {
+    overlay(val) {
+      val && setTimeout(() => {
+        this.overlay = false
+      }, 100000)
+    },
   },
 
   methods: {
-    volverAtras(){
+    volverAtras() {
       this.$router.go(-1)
     },
     atras() {
@@ -160,7 +177,7 @@ export default {
         }
 
         // 3️⃣ Éxito
-        this.$router.push({name: 'habitaciones-admin'})
+        this.$router.push({ name: 'habitaciones-admin' })
         this.$swal({
           title: "Registro Guardado!",
           text: "La habitación se registró correctamente",
@@ -189,6 +206,4 @@ export default {
   }
 }
 </script>
-<style>
-
-</style>
+<style></style>
