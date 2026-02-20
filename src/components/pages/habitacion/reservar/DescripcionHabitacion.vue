@@ -13,8 +13,13 @@
         <v-row dense v-if="habitacion?.imagenes?.length">
           <!-- Imagen principal -->
           <v-col cols="12" md="6">
-            <v-img :src="habitacion.imagenes[0].url_imagen" class="rounded-lg" height="420" cover
-              @click="abrirGaleria" />
+            <v-img :src="habitacion.imagenes[0].url_imagen" class="rounded-lg" height="420" cover @click="abrirGaleria">
+              <template #placeholder>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-progress-circular indeterminate color="grey" />
+                </div>
+              </template>
+            </v-img>
           </v-col>
 
           <!-- Imágenes pequeñas -->
@@ -22,7 +27,13 @@
             <v-row dense>
               <v-col cols="6" v-for="(image, index) in habitacion.imagenes.slice(1, 5)" :key="index">
                 <div class="image-wrapper">
-                  <v-img :src="image.url_imagen" class="rounded-lg" height="205" cover @click="abrirGaleria" />
+                  <v-img :src="image.url_imagen" class="rounded-lg" height="205" cover @click="abrirGaleria">
+                    <template #placeholder>
+                      <div class="d-flex align-center justify-center fill-height">
+                        <v-progress-circular indeterminate color="grey" />
+                      </div>
+                    </template>
+                  </v-img>
 
                   <!-- BOTÓN SOLO EN LA 5TA IMAGEN -->
                   <div v-if="index === 3 && habitacion.imagenes.length > 4" class="overlay" @click.stop="abrirGaleria">
@@ -46,7 +57,13 @@
         }" :slides-per-view="1" space-between="10" pagination navigation :modules="modules">
           <swiper-slide v-for="(image, index) in habitacion.imagenes" :key="index">
             <v-img :src="image.url_imagen" :alt="image.alt" class="rounded-lg" height="100%" cover
-              @click.stop="abrirGaleria" />
+              @click.stop="abrirGaleria">
+              <template #placeholder>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-progress-circular indeterminate color="grey" />
+                </div>
+              </template>
+            </v-img>
           </swiper-slide>
         </swiper>
       </template>
@@ -350,16 +367,12 @@
       <div class="galeria-container">
         <v-container fluid>
           <v-row dense>
-            <draggable v-model="habitacion.imagenes" item-key="url_imagen" tag="div" :animation="300"
-              ghost-class="dragging" class="d-flex flex-wrap w-100">
-              <template #item="{ element, index }">
-                <v-col cols="12" sm="6" md="4" lg="3" xl="2" class="pa-2">
-                  <v-card class="overflow-hidden">
-                    <v-img :src="element.url_imagen" height="200" class="cursor-grab" @click="mostrarImagen(element)"></v-img>
-                  </v-card>
-                </v-col>
-              </template>
-            </draggable>
+            <v-col v-for="(element, index) in habitacion.imagenes" :key="index" cols="12" sm="6" md="4" lg="3" xl="2" class="pa-2">
+              <v-card class="overflow-hidden">
+                <v-img :src="element.url_imagen" height="200" class="cursor-grab"
+                  @click="mostrarImagen(element)"></v-img>
+              </v-card>
+            </v-col>
           </v-row>
         </v-container>
       </div>
@@ -403,8 +416,6 @@
 
 <script>
 
-import draggable from 'vuedraggable';
-// Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 
 // Import Swiper styles
@@ -435,7 +446,6 @@ export default {
     Swiper,
     SwiperSlide,
     CalendarioHabitacion,
-    draggable
   },
   data() {
     return {
@@ -479,15 +489,6 @@ export default {
     }
   },
   computed: {
-    todasImagenes() {
-      return [
-        {
-          src: "https://img.freepik.com/foto-gratis/suite-dormitorio-lujo-hotel-resort-gran-altura-mesa-trabajo_105762-1783.jpg",
-          alt: "Vista principal",
-        },
-        ...this.imagenes,
-      ];
-    },
     restricciones() {
       return this.habitacion?.restricciones ?? []
     }

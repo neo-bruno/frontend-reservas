@@ -293,17 +293,10 @@ export default {
       return `${moment(fechaLlegada, 'YYYY-MM-DD').format('dddd, D')} - ${moment(fechaSalida, 'YYYY-MM-DD').format('D [de] MMMM [del] YYYY')}`
     },
     diasFaltantes(fechaObjetivo) {
-      const hoy = new Date()
-      const fecha = new Date(fechaObjetivo)
+      const hoy = moment().startOf('day')
+      const fecha = moment(fechaObjetivo).startOf('day')
 
-      // Normalizar horas para evitar errores
-      hoy.setHours(0, 0, 0, 0)
-      fecha.setHours(0, 0, 0, 0)
-
-      const diffMs = fecha - hoy
-      const diffDias = Math.ceil(diffMs / (1000 * 60 * 60 * 24))
-
-      return diffDias
+      return fecha.diff(hoy, 'days')
     },
 
     // ############################################
@@ -425,5 +418,4 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 </style>
