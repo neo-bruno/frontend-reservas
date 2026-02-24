@@ -167,11 +167,11 @@
               <span class="text-primary text-capitalize font-weight-medium">{{ reserva.descuento_reserva == 0 ? '' :
                 '-' }}${{ reserva.descuento_reserva }} BOB.-</span>
             </div>
-            <div class="d-flex justify-space-between text-caption text-grey-darken-3">
+            <!-- <div class="d-flex justify-space-between text-caption text-grey-darken-3">
               <span>Servicio de Reserva (+)</span>
               <span class="text-primary text-capitalize font-weight-medium">${{ reserva.servicio_reserva }}
                 BOB.-</span>
-            </div>
+            </div> -->
           </div>
 
           <v-divider class="my-1"></v-divider>

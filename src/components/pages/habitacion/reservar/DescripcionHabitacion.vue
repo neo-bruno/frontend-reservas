@@ -258,8 +258,7 @@
                     class="float-right">$ {{ reserva.total_estadia }} BOB.-</span></p>
                 <p class="text-body-2">Descuento total (-) <span class="float-right">$ {{ reserva.descuento == 0 ? '' :
                   '-' }}{{ reserva.descuento }} BOB.-</span></p>
-                <p class="text-body-2">Tarifa por servicio de Reserva (+)<span class="float-right">$ {{
-                  reserva.servicio_reserva }} BOB.-</span></p>
+                <!-- <p class="text-body-2">Tarifa por servicio de Reserva (+)<span class="float-right">$ {{ reserva.servicio_reserva }} BOB.-</span></p> -->
                 <v-divider class="my-2"></v-divider>
                 <p class="text-body-1 font-weight-bold">Total sin incluir impuestos <span class="float-right">$ {{
                   reserva.total_reserva }}
@@ -269,7 +268,7 @@
             <v-row class="justify-space-between font-weight-light">
               <v-col cols="12" class="d-flex justify-space-between pt-0">
                 <v-icon>mdi-account-group</v-icon>
-                <span class="text-decoration-underline" @click="dialogo_galeria = true"> {{
+                <span class="text-decoration-underline"> {{
                   habitacion.adultos_habitacion
                 }}
                   adultos</span>
@@ -322,12 +321,12 @@
             <span>Descuento Total</span>
             <span class="font-weight-bold">$ {{ reserva.descuento == 0 ? '' : '-' }}{{ reserva.descuento }} BOB.-</span>
           </v-row>
-          <v-row class="justify-space-between">
+          <!-- <v-row class="justify-space-between">
             <span>Servicio de Reserva</span>
             <span class="font-weight-bold">${{ reserva.servicio_reserva }} BOB.-</span>
-          </v-row>
+          </v-row> -->
 
-          <v-divider class="my-3"></v-divider>
+          <v-divider class="my-4"></v-divider>
 
           <v-row class="justify-space-between font-weight-bold">
             <span>Total sin impuestos</span>
@@ -367,7 +366,8 @@
       <div class="galeria-container">
         <v-container fluid>
           <v-row dense>
-            <v-col v-for="(element, index) in habitacion.imagenes" :key="index" cols="12" sm="6" md="4" lg="3" xl="2" class="pa-2">
+            <v-col v-for="(element, index) in habitacion.imagenes" :key="index" cols="12" sm="6" md="4" lg="3" xl="2"
+              class="pa-2">
               <v-card class="overflow-hidden">
                 <v-img :src="element.url_imagen" height="200" class="cursor-grab"
                   @click="mostrarImagen(element)"></v-img>
@@ -553,7 +553,7 @@ export default {
       this.habitacion.habitacion_camas.forEach(cama => {
         this.reserva.servicio_reserva = this.reserva.servicio_reserva + (cama.costo_hab_cama * cama.cantidad_hab_cama)
       });
-      this.reserva.total_reserva = (total - this.reserva.descuento) + this.reserva.servicio_reserva
+      this.reserva.total_reserva = (total - this.reserva.descuento)
     },
     borrarRangoFechas() {
       this.reserva = {
@@ -723,7 +723,7 @@ export default {
 
 .descripcion--clamp {
   display: -webkit-box;
-  //-webkit-line-clamp: 3;
+  -webkit-line-clamp: 3;
   /* 👈 SOLO 2 LÍNEAS */
   -webkit-box-orient: vertical;
   overflow: hidden;

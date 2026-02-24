@@ -101,11 +101,11 @@
               <span class="text-primary text-capitalize font-weight-medium">{{ habitacion.reserva.descuento == 0 ? '' :
                 '-' }}${{ habitacion.reserva.descuento }} BOB.-</span>
             </div>
-            <div class="d-flex justify-space-between text-caption text-grey-darken-3">
+            <!-- <div class="d-flex justify-space-between text-caption text-grey-darken-3">
               <span>Servicio de Reserva (+)</span>
               <span class="text-primary text-capitalize font-weight-medium">${{ habitacion.reserva.servicio_reserva }}
                 BOB.-</span>
-            </div>
+            </div> -->
           </div>
 
           <v-divider class="my-1"></v-divider>
@@ -472,7 +472,7 @@ export default {
 
 .descripcion--clamp {
   display: -webkit-box;
-  //-webkit-line-clamp: 3;
+  -webkit-line-clamp: 3;
   /* 👈 SOLO 2 LÍNEAS */
   -webkit-box-orient: vertical;
   overflow: hidden;

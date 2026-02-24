@@ -112,7 +112,7 @@
           <v-row>
             <v-col cols="12">
               <CalendarioReservas :restriccion="reserva.restriccion" :restricciones="restricciones"
-                @modificarFechasReserva="cambiarFechasReserva" />
+                @modificarFechasReserva="dialogo_mensaje = true" />
             </v-col>
           </v-row>
         </v-container>
@@ -123,6 +123,40 @@
           @click="cerrarDialogoFechas">Salir</v-btn>
         <v-btn v-else variant="elevated" color="success" prepend-icon="mdi-calendar-refresh"
           @click="modificarRangoFechas">Cambiar Fechas</v-btn>
+      </v-card-actions>
+
+    </v-card>
+  </v-dialog>
+
+  <!-- dialogo para mostrar el mensaje de cambiar la fecha -->
+  <v-dialog v-model="dialogo_mensaje" transition="dialog-bottom-transition" :fullscreen="$vuetify.display.xs"
+    :max-width="$vuetify.display.xs ? undefined : 470" persistent scrollable>
+    <v-card class="px-0">
+
+      <v-toolbar class="text-center font-weight-medium text-wrap bg-primary"
+        title="Mensaje de Solicitud"></v-toolbar>
+
+      <v-card-text class="px-0 py-0">
+        <v-container>
+          <v-row>
+            <v-col cols="12">
+              <v-card>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12">
+                      Lo siento esta opcion se ha deshabilitado, para cambiar la fecha de su reserva, debe contactarse con el Hotel para solicitar su cambio de fecha. muchas gracias!
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
+
+      <v-card-actions class="justify-end">
+        <v-btn variant="elevated" color="red" prepend-icon="mdi-cancel"
+          @click="dialogo_mensaje = false">Salir</v-btn>
       </v-card-actions>
 
     </v-card>
@@ -299,6 +333,8 @@ export default {
 
       // dialogo para ver la reserva
       dialogo_ver_reserva: false,
+
+      dialogo_mensaje: false,
 
       // paralizando pantalla
       overlay: false,
